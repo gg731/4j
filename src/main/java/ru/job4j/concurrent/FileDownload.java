@@ -39,10 +39,6 @@ public class FileDownload {
         int speed = Integer.valueOf(args[1]);
         String fileName = "new_file.xml";
 
-//        Test
-//        String url = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
-//        int speed = 200;
-
         FileDownload fd = new FileDownload(url, speed, fileName);
         fd.getFile();
 
