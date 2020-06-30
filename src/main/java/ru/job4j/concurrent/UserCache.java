@@ -1,11 +1,10 @@
-package ru.job4j.ref;
+package ru.job4j.concurrent;
 
 import net.jcip.annotations.NotThreadSafe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @NotThreadSafe
@@ -21,10 +20,15 @@ public class UserCache {
         return User.of(users.get(id).getName());
     }
 
-    public synchronized List<User> findAll() {
-        return new ArrayList<>(users.values());
+    public ConcurrentHashMap<Integer, User> cloneUser() {
+        return new ConcurrentHashMap<>(users);
+    }
+
+    public List<User> findAll() {
+        return new ArrayList<>(cloneUser().values());
     }
 }
+
 class User {
     private int id;
     private String name;
