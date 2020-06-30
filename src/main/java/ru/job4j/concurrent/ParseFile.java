@@ -5,8 +5,8 @@ import java.io.*;
 public class ParseFile {
     private File file;
 
-    public synchronized void setFile(File f) {
-        file = f;
+    public ParseFile(File file) {
+        this.file = file;
     }
 
     public synchronized File getFile() {
@@ -27,8 +27,10 @@ public class ParseFile {
         InputStream i = new FileInputStream(file);
         String output = "";
         int data;
-        while ((data = i.read()) != -1 && data < 0x80) {
-            output += (char) data;
+        while ((data = i.read()) != -1) {
+            if (data < 0x80) {
+                output += (char) data;
+            }
         }
         return output;
     }
@@ -40,8 +42,10 @@ public class ParseFile {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        System.out.println((char) 0);
+        File file = new File("pom.xml");
+        ParseFile ps = new ParseFile(file);
+        System.out.println(ps.getContentWithoutUnicode());
     }
 }
