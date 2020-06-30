@@ -6,7 +6,6 @@ public final class Node<T> {
     private final Node next;
     private final T value;
 
-
     public Node(Node next, T value) {
         this.next = next;
         this.value = value;
@@ -19,6 +18,4 @@ public final class Node<T> {
     public T getValue() {
         return value;
     }
-
-
 }

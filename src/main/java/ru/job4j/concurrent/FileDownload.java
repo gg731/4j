@@ -18,7 +18,9 @@ public class FileDownload {
                 long t = System.currentTimeMillis();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 long s = System.currentTimeMillis() - t;
-                if (s < 1000) Thread.sleep(1000 - s);
+                if (s < 1000) {
+                    Thread.sleep(1000 - s);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
