@@ -2,10 +2,9 @@ package ru.job4j.concurrent;
 
 import net.jcip.annotations.NotThreadSafe;
 
-@NotThreadSafe
 public final class Node<T> {
-    private Node next;
-    private T value;
+    private final Node next;
+    private final T value;
 
 
     public Node(Node next, T value) {
