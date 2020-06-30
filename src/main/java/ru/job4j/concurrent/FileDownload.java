@@ -6,11 +6,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
-public class FileDownload {
+public class FileDownload implements Runnable {
     private File file;
+    private String url;
+    private String fileName;
+    private int speed;
 
-    public FileDownload(String url, int speed, String fileName) {
+    public FileDownload(String url, String fileName, int speed) {
+        this.url = url;
+        this.fileName = fileName;
+        this.speed = speed;
+    }
 
+    @Override
+    public void run() {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
             byte[] dataBuffer = new byte[speed];
@@ -28,6 +37,7 @@ public class FileDownload {
         }
 
         this.file = new File(fileName);
+
     }
 
     public File getFile() {
@@ -37,10 +47,14 @@ public class FileDownload {
     public static void main(String[] args) throws Exception {
         String url = args[0];
         int speed = Integer.valueOf(args[1]);
+//        String url = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
+//        int speed = 200;
         String fileName = "new_file.xml";
 
-        FileDownload fd = new FileDownload(url, speed, fileName);
-        fd.getFile();
+        Thread thread = new Thread(new FileDownload(url, fileName, speed));
+        thread.start();
 
     }
+
+
 }
