@@ -13,7 +13,7 @@ public class UserStorage {
     private List<QUser> qUsers = new LinkedList<>();
 
     public synchronized boolean add(QUser user) {
-        if (!qUsers.contains(user)) {
+        if (getUserById(user.getId()) == null) {
             qUsers.add(user);
             return true;
         }
@@ -21,7 +21,7 @@ public class UserStorage {
     }
 
     public synchronized boolean delete(QUser user) {
-        if (!qUsers.contains(user)) {
+        if (getUserById(user.getId()) != null) {
             qUsers.remove(user);
             return true;
         }
@@ -29,21 +29,24 @@ public class UserStorage {
     }
 
     public synchronized boolean update(QUser user) {
-        if (qUsers.contains(user)) {
-            qUsers.stream().forEach(q -> {
-                if (q.getId() == user.getId()) {
-                    qUsers.remove(user.getId());
-                    qUsers.add(user);
-                }
-            });
-            return true;
+        for (QUser q : qUsers) {
+            if (q.getId() == user.getId()) {
+                qUsers.remove(q);
+                qUsers.add(user);
+                return true;
+            }
         }
         return false;
     }
 
-//    public synchronized boolean transfer(int fromId, int toId, int amount) {
-//        getUserById(fromId).setAmount();
-//    }
+    public synchronized boolean transfer(int fromId, int toId, int amount) {
+        if (getUserById(fromId) != null && getUserById(toId) != null) {
+            getUserById(fromId).transaction(-amount);
+            getUserById(toId).transaction(amount);
+            return true;
+        }
+        return false;
+    }
 
     private QUser getUserById(int id) {
         for (QUser q : qUsers) {
@@ -53,23 +56,22 @@ public class UserStorage {
         }
         return null;
     }
-
 }
 
 class QUser {
     private final int id;
-    private volatile BigDecimal amount;
+    private volatile int amount;
 
-    public QUser(int id, BigDecimal amount) {
+    public QUser(int id, int amount) {
         this.id = id;
         this.amount = amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    public BigDecimal getAmount() {
+    public int getAmount() {
         return amount;
     }
 
@@ -77,7 +79,13 @@ class QUser {
         return id;
     }
 
-    public void transaction(BigDecimal sum) {
+    public synchronized void transaction(int sum) {
+        amount += sum;
+    }
+
+    @Override
+    public String toString() {
+        return "QUser : " + "id=" + id + ", amount=" + amount;
     }
 }
 
