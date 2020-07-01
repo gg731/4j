@@ -12,8 +12,11 @@ public class ThreadState {
 
         first.start();
         second.start();
-        first.join();
-        second.join();
+
+        while (first.getState() != Thread.State.TERMINATED
+                || second.getState() != Thread.State.TERMINATED) {
+            continue;
+        }
 
         System.out.println("Работа завершена");
     }
