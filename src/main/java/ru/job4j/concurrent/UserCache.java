@@ -20,12 +20,12 @@ public class UserCache {
         return User.of(users.get(id).getName());
     }
 
-    public ConcurrentHashMap<Integer, User> cloneUser() {
-        return new ConcurrentHashMap<>(users);
-    }
-
     public List<User> findAll() {
-        return new ArrayList<>(cloneUser().values());
+        List<User> cloneValues = new ArrayList<>();
+        for (User u : users.values()) {
+            cloneValues.add(User.of(u.getName()));
+        }
+        return cloneValues;
     }
 }
 
