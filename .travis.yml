@@ -2,7 +2,7 @@
 language: java
 #
 jdk:
-  - openjdk13
+  openjdk13
 
 ## после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 ## Здесь используется сторонни сервис https://codecov.io/
@@ -13,7 +13,7 @@ after_success:
 notifications:
   email:
     recipients:
-      - g1377@protonmail.com
+      g1377@protonmail.com
     on_success: never # default: change
     on_failure: always # default: always
 
