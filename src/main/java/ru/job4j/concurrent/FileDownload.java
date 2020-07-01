@@ -37,7 +37,6 @@ public class FileDownload implements Runnable {
         }
 
         this.file = new File(fileName);
-
     }
 
     public File getFile() {
@@ -53,8 +52,5 @@ public class FileDownload implements Runnable {
 
         Thread thread = new Thread(new FileDownload(url, fileName, speed));
         thread.start();
-
     }
-
-
 }

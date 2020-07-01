@@ -4,16 +4,22 @@ import java.io.*;
 
 public class ParseFile {
     private File file;
+    private String content;
 
-    public ParseFile(File file) {
+    public ParseFile(File file) throws IOException {
         this.file = file;
+        this.content = initContent();
     }
 
     public synchronized File getFile() {
         return file;
     }
 
-    public synchronized String getContent() throws IOException {
+    public String getContent() {
+        return content;
+    }
+
+    private synchronized String initContent() throws IOException {
         InputStream i = new FileInputStream(file);
         String output = "";
         int data;
@@ -35,7 +41,7 @@ public class ParseFile {
         return output;
     }
 
-    public synchronized void saveContent(String content) throws IOException {
+    public synchronized void saveContent() throws IOException {
         OutputStream o = new FileOutputStream(file);
         for (int i = 0; i < content.length(); i++) {
             o.write(content.charAt(i));
