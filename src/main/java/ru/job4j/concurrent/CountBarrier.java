@@ -24,11 +24,10 @@ public class CountBarrier {
 
     public void await() throws InterruptedException {
         synchronized (monitor) {
-            if (count != total) {
-                wait();
-            } else {
-                notify();
+            while (count != total) {
+                continue;
             }
+            notify();
         }
     }
 }
