@@ -27,7 +27,7 @@ public class CountBarrier {
             if (count != total) {
                 wait();
             } else {
-                notifyAll();
+                notify();
             }
         }
     }
