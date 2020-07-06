@@ -10,24 +10,22 @@ public class CountBarrier {
 
     private final int total;
 
-    private int count = 0;
+    private volatile int count = 0;
 
     public CountBarrier(final int total) {
         this.total = total;
     }
 
     public void count() {
-        synchronized (monitor) {
-            this.count++;
-        }
+        this.count++;
     }
 
     public void await() throws InterruptedException {
         synchronized (monitor) {
-            while (count != total) {
-                continue;
+            if (count != total) {
+                wait();
             }
-            notify();
+            notifyAll();
         }
     }
 }
