@@ -7,7 +7,7 @@ jdk:
 
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  bash <(curl -s https://codecov.io/bash)
 
 notifications:
   email:
@@ -18,4 +18,4 @@ notifications:
 
 env:
   global:
-    - CODECOV_TOKEN="a84e8928-2f62-4127-8435-27ece167ff51"
+    CODECOV_TOKEN="a84e8928-2f62-4127-8435-27ece167ff51"
