@@ -14,17 +14,12 @@ public class CASCount<T> {
         do {
             temp = count.get();
             temp++;
-
         } while (!count.compareAndSet(count.get(), temp));
-
-//        int temp = count.get() + 1;
-//        count.updateAndGet(t -> t < temp ? temp : t);
     }
 
     public int get() {
         return count.get();
     }
-
 
     public static void main(String[] args) {
         CASCount casCount = new CASCount();
