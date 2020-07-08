@@ -8,11 +8,15 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @ThreadSafe
-public class SimpleBlockingQueue<T> extends ArrayList {
+public class SimpleBlockingQueue<T> {
 
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private final int size = 10;
+    private int size;
+
+    public SimpleBlockingQueue(Integer size) {
+        this.size = size;
+    }
 
     public synchronized void offer(T value) {
         try {
@@ -34,6 +38,10 @@ public class SimpleBlockingQueue<T> extends ArrayList {
         notify();
 
         return element;
+    }
+
+    public synchronized boolean isEmpty() {
+        return queue.isEmpty();
     }
 
 }
