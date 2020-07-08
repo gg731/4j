@@ -15,7 +15,7 @@ class SimpleBlockingQueueTest {
 
     @Test
     public void queueSimpleTest() throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue(5);
         CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList();
         final ArrayList result = new ArrayList(Arrays.asList(0, 1, 2, 3, 4));
         final CountDownLatch cdl = new CountDownLatch(2);
