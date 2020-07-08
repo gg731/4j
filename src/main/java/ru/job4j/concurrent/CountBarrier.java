@@ -17,15 +17,16 @@ public class CountBarrier {
     }
 
     public void count() {
-        this.count++;
+        count++;
+        if (count == total) {
+            notifyAll();
+            count = 0;
+        }
     }
 
     public void await() throws InterruptedException {
-        synchronized (monitor) {
-            if (count != total) {
-                wait();
-            }
-            notifyAll();
+        if (count != total) {
+            wait();
         }
     }
 }
