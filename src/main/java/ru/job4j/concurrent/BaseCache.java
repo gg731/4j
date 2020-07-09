@@ -17,12 +17,11 @@ public class BaseCache {
     public void update(Base base) {
         cache.computeIfPresent(
                 base.getId(), (k, v) -> {
-                    if (base.getVersion().compareAndSet(v.getVersion().intValue(),
+                    if (!base.getVersion().compareAndSet(v.getVersion().intValue(),
                             v.getVersion().incrementAndGet())) {
-                        return base;
-                    } else {
                         throw new OptimisticException("Versions do not match!");
                     }
+                    return base;
                 });
     }
 }
