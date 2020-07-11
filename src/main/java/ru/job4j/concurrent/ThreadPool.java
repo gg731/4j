@@ -8,11 +8,19 @@ public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(size);
 
-    public void work(Runnable job) {
+    public ThreadPool() throws InterruptedException {
+        for (int i = 0; i < size; i++) {
+            threads.add(new Thread(tasks.poll()));
+        }
+
+        threads.stream().forEach(Thread::start);
+    }
+
+    public synchronized void work(Runnable job) {
         tasks.offer(job);
     }
 
-    public void shutdown() throws InterruptedException {
-        threads.add(new Thread(tasks.poll()));
+    public synchronized void shutdown() {
+        threads.stream().forEach(Thread::interrupt);
     }
 }
