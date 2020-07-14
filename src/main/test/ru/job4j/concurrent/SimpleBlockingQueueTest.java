@@ -32,12 +32,7 @@ class SimpleBlockingQueueTest {
         Thread threadC = new Thread(
                 () -> {
                     while (cdl.getCount() == 2 || !queue.isEmpty()) {
-                        try {
                             buffer.add(queue.poll());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            Thread.currentThread().interrupt();
-                        }
                     }
                     cdl.countDown();
                 }
