@@ -8,7 +8,7 @@ public class ThreadPool {
     private final int size = Runtime.getRuntime().availableProcessors();
     private final List<Pool> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(size);
-    private boolean isStopped = false;
+    private volatile boolean isStopped = false;
 
     public ThreadPool() throws InterruptedException {
         IntStream.range(0, size).forEach(i -> threads.add(new Pool(tasks)));
@@ -24,7 +24,9 @@ public class ThreadPool {
 
     public void shutdown() {
         isStopped = true;
-        threads.stream().forEach(t -> t.doStop());
+        for (Pool pool : threads) {
+            pool.doStop();
+        }
     }
 }
 
@@ -39,8 +41,12 @@ class Pool extends Thread {
     @Override
     public void run() {
         while (!isStopped) {
-            Runnable runnable = (Runnable) queue.poll();
-            runnable.run();
+            try {
+                Runnable runnable = (Runnable) queue.poll();
+                runnable.run();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
