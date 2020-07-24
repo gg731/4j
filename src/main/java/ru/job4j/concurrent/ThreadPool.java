@@ -6,14 +6,16 @@ import java.util.stream.IntStream;
 
 public class ThreadPool {
     private final int size = Runtime.getRuntime().availableProcessors();
-    private final List<Pool> threads = new LinkedList<>();
+    private final Pool[] threads = new Pool[size];
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(size);
     private volatile boolean isStopped = false;
 
-    public ThreadPool() throws InterruptedException {
-        IntStream.range(0, size).forEach(i -> threads.add(new Pool(tasks)));
+    public ThreadPool() {
+        IntStream.range(0, size).forEach(i -> threads[i] = new Pool(tasks));
 
-        threads.stream().forEach(Thread::start);
+        for (Pool pool : threads) {
+            pool.start();
+        }
     }
 
     public void work(Runnable job) {
